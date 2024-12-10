@@ -84,3 +84,8 @@ build/
 results*/
 *.py
 running/
+
+
+# VS Code
+.vscode/
+.devcontainer/
