@@ -1,5 +1,6 @@
 CXX      := g++
 CXXFLAGS := -Wall -Wextra -O3 --std=c++17
+DEBUGFLAGS := -g -O0 --std=c++17
 LDFLAGS  := -L/usr/lib -lstdc++ -lm -lpthread
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
@@ -15,7 +16,12 @@ OBJECTS  := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 DEPENDENCIES \
          := $(OBJECTS:.o=.d)
 
-all: build $(APP_DIR)/$(TARGET)
+all: main
+
+main: build $(APP_DIR)/$(TARGET)
+
+debug: CXXFLAGS := $(DEBUGFLAGS)
+debug: clean main
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -32,9 +38,6 @@ $(APP_DIR)/$(TARGET): $(OBJECTS)
 build:
 	@mkdir -p $(APP_DIR)
 	@mkdir -p $(OBJ_DIR)
-
-debug: CXXFLAGS += -DDEBUG -g
-debug: all
 
 #release: CXXFLAGS += -O3
 release: all
